@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROTECT Console 4 - Ndhiwa Sub-County Children's Office</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👮</text></svg>">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #991b1b 0%, #111827 100%); }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .case-card { transition: all 0.3s ease; border-left: 4px solid #2563eb; }
+        .case-card.urgent { border-left-color: #991b1b; background: rgba(153, 27, 27, 0.1); }
+        .case-card.moderate { border-left-color: #eab308; background: rgba(234, 179, 8, 0.1); }
+        .case-card.low { border-left-color: #16a34a; background: rgba(22, 163, 74, 0.1); }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .badge-urgent { background: #991b1b; color: #fecaca; }
+        .badge-moderate { background: #854d0e; color: #fcd34d; }
+        .badge-low { background: #166534; color: #bbf7d0; }
+        .btn-primary { background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; border: none; cursor: pointer; font-weight: 600; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; }
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: #1e293b; border-radius: 1rem; padding: 2rem; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+        .nav-tab { padding: 0.75rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .nav-tab.active { border-bottom-color: #2563eb; color: #2563eb; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .message-bubble { margin: 0.5rem 0; padding: 0.75rem 1rem; border-radius: 0.5rem; }
+        .message-bubble.officer { background: #1e40af; color: white; margin-left: 1rem; }
+        .message-bubble.public { background: #334155; color: white; }
+        .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.75rem; }
+        .evidence-item { background: #1e293b; border: 1px solid #475569; border-radius: 0.5rem; padding: 0.75rem; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .evidence-item:hover { border-color: #2563eb; box-shadow: 0 0 10px rgba(37, 99, 235, 0.3); }
+        .file-icon { font-size: 2rem; margin: 0.5rem 0; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #475569; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .notification { position: fixed; bottom: 1rem; right: 1rem; background: #16a34a; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; z-index: 999; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .procedure-timeline { position: relative; padding: 1rem 0; }
+        .timeline-item { display: flex; gap: 1rem; margin: 1rem 0; }
+        .timeline-dot { width: 12px; height: 12px; border-radius: 50%; background: #2563eb; margin-top: 0.5rem; flex-shrink: 0; }
+        .timeline-content { background: rgba(255, 255, 255, 0.05); padding: 0.75rem; border-radius: 0.5rem; flex: 1; border-left: 2px solid #2563eb; padding-left: 1rem; }
+        .referral-chain { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; }
+        .referral-step { background: #1e40af; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; }
+        .board-alert { background: rgba(153, 27, 27, 0.2); border-left: 3px solid #991b1b; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; }
+        @media (max-width: 640px) { 
+            .modal-content { max-width: 95vw; padding: 1.5rem; }
+            .case-card { border-left: 3px solid; }
+            .evidence-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="gradient-header text-white p-4 sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-shield-alt text-3xl"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold">PROTECT Console 4</h1>
+                        <p class="text-sm text-gray-200">Ndhiwa Sub-County Children's Office | Procedure & Compliance Tracked</p>
+                    </div>
+                </div>
+                <div class="text-right text-sm">
+                    <p>Officer: <strong id="officer-name">Loading...</strong></p>
+                    <p class="text-xs text-gray-300">📤 Board Console: <span id="board-sync-status">Syncing...</span></p>
+                </div>
+            </div>
+            
+            <!-- QUICK STATS -->
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-2 text-sm">
+                <div class="bg-black/30 p-2 rounded text-center">
+                    <p class="text-2xl font-bold" id="stats-urgent">0</p>
+                    <p class="text-xs text-red-300">🚨 Urgent</p>
+                </div>
+                <div class="bg-black/30 p-2 rounded text-center">
+                    <p class="text-2xl font-bold" id="stats-moderate">0</p>
+                    <p class="text-xs text-yellow-300">⚠️ Moderate</p>
+                </div>
+                <div class="bg-black/30 p-2 rounded text-center">
+                    <p class="text-2xl font-bold" id="stats-low">0</p>
+                    <p class="text-xs text-green-300">✓ Low</p>
+                </div>
+                <div class="bg-black/30 p-2 rounded text-center">
+                    <p class="text-2xl font-bold" id="stats-active">0</p>
+                    <p class="text-xs text-blue-300">🔄 Active</p>
+                </div>
+                <div class="bg-black/30 p-2 rounded text-center">
+                    <p class="text-2xl font-bold" id="stats-compliant">0</p>
+                    <p class="text-xs text-purple-300">✓ Compliant</p>
+                </div>
+                <div class="bg-black/30 p-2 rounded text-center">
+                    <p class="text-2xl font-bold" id="stats-resolved">0</p>
+                    <p class="text-xs text-emerald-300">✓ Closed</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-20 z-30 overflow-x-auto">
+        <div class="max-w-7xl mx-auto flex min-w-max md:flex-wrap">
+            <button class="nav-tab active" onclick="switchTab('dashboard')">
+                <i class="fas fa-chart-line mr-2"></i>Dashboard
+            </button>
+            <button class="nav-tab" onclick="switchTab('cases')">
+                <i class="fas fa-folder-open mr-2"></i>Cases
+            </button>
+            <button class="nav-tab" onclick="switchTab('facebook-feed')">
+                <i class="fas fa-facebook mr-2"></i>Feed
+            </button>
+            <button class="nav-tab" onclick="switchTab('procedures')">
+                <i class="fas fa-tasks mr-2"></i>Procedures
+            </button>
+            <button class="nav-tab" onclick="switchTab('referrals')">
+                <i class="fas fa-exchange-alt mr-2"></i>Referrals
+            </button>
+            <button class="nav-tab" onclick="switchTab('engage')">
+                <i class="fas fa-comments mr-2"></i>Engage
+            </button>
+            <button class="nav-tab" onclick="switchTab('audit-log')">
+                <i class="fas fa-history mr-2"></i>Audit Log
+            </button>
+            <button class="nav-tab" onclick="switchTab('reports')">
+                <i class="fas fa-file-alt mr-2"></i>Reports
+            </button>
+            <button class="nav-tab" onclick="switchTab('legal')">
+                <i class="fas fa-gavel mr-2"></i>Legal
+            </button>
+            <button class="nav-tab" onclick="switchTab('settings')">
+                <i class="fas fa-cog mr-2"></i>Settings
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto p-4">
+
+        <!-- DASHBOARD TAB -->
+        <div id="dashboard" class="tab-content active">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                
+                <!-- LEFT: TODAY'S CASES -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-xl font-bold mb-4">📋 Active Cases Today</h2>
+                    <div id="dashboard-cases" class="space-y-3 max-h-96 overflow-y-auto"></div>
+                </div>
+
+                <!-- RIGHT: QUICK ACTIONS & BOARD ALERTS -->
+                <div class="space-y-4">
+                    <div class="board-alert">
+                        <h3 class="font-bold mb-2">📢 Board Console Alert</h3>
+                        <p id="board-alert-content" class="text-sm text-gray-300">Cases flagged for Board consultation appear here</p>
+                    </div>
+
+                    <div class="glass-panel p-4 rounded-lg">
+                        <h3 class="font-bold mb-3"><i class="fas fa-robot mr-2"></i>AI Assistant</h3>
+                        <div id="ai-assistant" class="text-sm text-gray-300 space-y-2 max-h-48 overflow-y-auto">
+                            <p class="italic text-gray-400">Waiting for cases...</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-4 rounded-lg">
+                        <h3 class="font-bold mb-3"><i class="fas fa-clock mr-2"></i>Activity Log</h3>
+                        <div id="activity-log" class="text-xs space-y-2 max-h-48 overflow-y-auto">
+                            <p class="text-gray-400">No recent activity</p>
+                        </div>
+                    </div>
+
+                    <button onclick="syncFacebook()" class="w-full btn-primary">
+                        <i class="fas fa-sync mr-2"></i>Sync Facebook Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CASES TAB -->
+        <div id="cases" class="tab-content">
+            <div class="flex gap-4 mb-6 flex-wrap">
+                <button onclick="filterCases('all')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded">All Cases</button>
+                <button onclick="filterCases('urgent')" class="px-4 py-2 bg-red-900/30 hover:bg-red-900/50 rounded text-red-300">🚨 Urgent</button>
+                <button onclick="filterCases('moderate')" class="px-4 py-2 bg-yellow-900/30 hover:bg-yellow-900/50 rounded text-yellow-300">⚠️ Moderate</button>
+                <button onclick="filterCases('low')" class="px-4 py-2 bg-green-900/30 hover:bg-green-900/50 rounded text-green-300">✓ Low</button>
+                <button onclick="filterCases('non-compliant')" class="px-4 py-2 bg-purple-900/30 hover:bg-purple-900/50 rounded text-purple-300">⚠️ Non-Compliant</button>
+                <button onclick="filterCases('closed')" class="px-4 py-2 bg-blue-900/30 hover:bg-blue-900/50 rounded text-blue-300">✓ Closed</button>
+            </div>
+
+            <div id="cases-container" class="space-y-3 max-h-96 overflow-y-auto"></div>
+        </div>
+
+        <!-- FACEBOOK FEED TAB -->
+        <div id="facebook-feed" class="tab-content">
+            <div class="glass-panel p-4 rounded-lg mb-4">
+                <h3 class="font-bold mb-3"><i class="fas fa-facebook mr-2"></i>Facebook Page Posts</h3>
+                <div class="flex gap-2 mb-4 flex-wrap">
+                    <input type="text" id="fb-page-url" placeholder="Facebook Page URL or ID (e.g., 61591632187238)" class="flex-1 bg-slate-800 text-white px-3 py-2 rounded border border-slate-700">
+                    <button onclick="connectFacebook()" class="btn-primary"><i class="fas fa-plug mr-2"></i>Connect</button>
+                </div>
+                <p class="text-xs text-gray-400">Enter your Facebook page ID. You'll need a Facebook App with Page Access Token.</p>
+            </div>
+
+            <h3 class="font-bold mb-3 mt-6">📱 Comments Feed</h3>
+            <div id="facebook-comments" class="space-y-4">
+                <p class="text-gray-400 text-center py-8">Connect Facebook page to see comments</p>
+            </div>
+        </div>
+
+        <!-- PROCEDURES TAB - CHILDREN'S ACT COMPLIANCE TRACKING -->
+        <div id="procedures" class="tab-content">
+            <div class="glass-panel p-6 rounded-lg mb-6">
+                <h2 class="text-xl font-bold mb-4"><i class="fas fa-tasks mr-2"></i>Case Procedure Tracking - Children's Act 2022 Compliance</h2>
+                <p class="text-sm text-gray-300 mb-4">Track each case through legal procedures from reporting to closure</p>
+                
+                <div id="procedures-list" class="space-y-4">
+                    <p class="text-gray-400">Select a case to view procedure compliance</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-lg">
+                <h3 class="font-bold mb-3">Standard Procedure Framework</h3>
+                <div class="procedure-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">1. Initial Report (Intake)</p>
+                            <p class="text-xs text-gray-400">Report received from public, FB, or stakeholders. Mandatory reporting obligation triggers.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">2. Initial Assessment & Triage</p>
+                            <p class="text-xs text-gray-400">Immediate risk assessment. Urgent cases escalated within 24 hours.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">3. Investigation & Evidence Collection</p>
+                            <p class="text-xs text-gray-400">Gather evidence (documents, videos, voice notes, testimonies). Chain of custody maintained.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">4. Multi-Stakeholder Referral</p>
+                            <p class="text-xs text-gray-400">Assign duty bearers (health, police, teachers). Track referral chain.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">5. Intervention & Action Tracking</p>
+                            <p class="text-xs text-gray-400">Monitor actions by each stakeholder. Log all communications.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">6. Legal/Court Process (if needed)</p>
+                            <p class="text-xs text-gray-400">Escalate to courts for mandatory cases. Follow Children's Act procedures.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">7. Monitoring & Follow-Up</p>
+                            <p class="text-xs text-gray-400">Ongoing support and case review. Ensure outcomes achieved.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="font-bold text-sm">8. Case Closure & Documentation</p>
+                            <p class="text-xs text-gray-400">Final assessment. All documentation complete. Archive case.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REFERRALS TAB - VALUE CHAIN TRACKING -->
+        <div id="referrals" class="tab-content">
+            <div class="glass-panel p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4"><i class="fas fa-exchange-alt mr-2"></i>Referral Chain - Case Value Chain Tracking</h2>
+                <p class="text-sm text-gray-300 mb-4">Track all referrals from initial report through case closure</p>
+                
+                <div id="referrals-list" class="space-y-4">
+                    <p class="text-gray-400">Select a case to view referral chain</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-lg mt-6">
+                <h3 class="font-bold mb-3">Referral Types & Protocols</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-slate-800 p-3 rounded">
+                        <p class="font-bold text-blue-300">Police Referral</p>
+                        <p class="text-gray-400 text-xs">For criminal cases (abuse, assault, trafficking)</p>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded">
+                        <p class="font-bold text-green-300">Health Referral</p>
+                        <p class="text-gray-400 text-xs">Medical examination, treatment, psychosocial support</p>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded">
+                        <p class="font-bold text-yellow-300">Education Referral</p>
+                        <p class="text-gray-400 text-xs">School enrollment, teacher support, safe learning</p>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded">
+                        <p class="font-bold text-purple-300">Social Support Referral</p>
+                        <p class="text-gray-400 text-xs">Financial aid, shelter, family support services</p>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded">
+                        <p class="font-bold text-red-300">Legal/Court Referral</p>
+                        <p class="text-gray-400 text-xs">Court proceedings, legal representation</p>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded">
+                        <p class="font-bold text-indigo-300">Community Referral</p>
+                        <p class="text-gray-400 text-xs">Community leaders, faith-based support</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENGAGE TAB -->
+        <div id="engage" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                
+                <!-- LEFT: SELECT CASE -->
+                <div class="lg:col-span-1">
+                    <h3 class="font-bold mb-3">Select Case</h3>
+                    <div id="engage-cases" class="space-y-2 max-h-96 overflow-y-auto">
+                        <p class="text-gray-400">No cases to engage</p>
+                    </div>
+                </div>
+
+                <!-- RIGHT: ENGAGEMENT INTERFACE -->
+                <div class="lg:col-span-2">
+                    <div id="engage-panel" class="glass-panel p-6 rounded-lg">
+                        <p class="text-gray-400 text-center py-12">Select a case to start engagement</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AUDIT LOG TAB - OFFICER ACTIONS TRACKING -->
+        <div id="audit-log" class="tab-content">
+            <div class="glass-panel p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4"><i class="fas fa-history mr-2"></i>Daily Action Audit Log</h2>
+                <p class="text-sm text-gray-300 mb-4">Every officer action is logged and shared with the Board Console for consultation</p>
+                
+                <div class="mb-4 flex gap-2 flex-wrap">
+                    <select id="audit-filter-date" class="bg-slate-800 text-white px-3 py-2 rounded border border-slate-700">
+                        <option>Today</option>
+                        <option>This Week</option>
+                        <option>This Month</option>
+                        <option>All Time</option>
+                    </select>
+                    <select id="audit-filter-action" class="bg-slate-800 text-white px-3 py-2 rounded border border-slate-700">
+                        <option value="">All Actions</option>
+                        <option value="create">Created</option>
+                        <option value="update">Updated</option>
+                        <option value="assign">Assigned</option>
+                        <option value="refer">Referred</option>
+                        <option value="message">Messaged</option>
+                        <option value="close">Closed</option>
+                    </select>
+                    <button onclick="downloadAuditLog()" class="btn-primary"><i class="fas fa-download mr-2"></i>Export</button>
+                </div>
+
+                <div id="audit-log-container" class="space-y-3 max-h-96 overflow-y-auto">
+                    <p class="text-gray-400">Loading audit log...</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-lg mt-6">
+                <h3 class="font-bold mb-3">Board Console - Real-time Sync</h3>
+                <div class="bg-slate-800 p-3 rounded text-sm text-gray-300">
+                    <p>✓ All officer actions logged and transmitted to PROTECT Board Console</p>
+                    <p>✓ Board and partners (ANPPCAN, etc.) notified of urgent/compliance issues</p>
+                    <p>✓ Real-time case status visible to authorized stakeholders</p>
+                    <p id="board-last-sync" class="text-xs text-gray-400 mt-2">Last sync: Just now</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- REPORTS TAB -->
+        <div id="reports" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="glass-panel p-4 rounded-lg">
+                    <h3 class="font-bold mb-2">📊 Today's Report</h3>
+                    <div id="daily-report" class="text-sm space-y-2">
+                        <p class="text-gray-400">Loading report...</p>
+                    </div>
+                </div>
+                <div class="glass-panel p-4 rounded-lg">
+                    <h3 class="font-bold mb-2">📈 Weekly Summary</h3>
+                    <div id="weekly-report" class="text-sm space-y-2">
+                        <p class="text-gray-400">Loading report...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-lg">
+                <h3 class="font-bold mb-3">📤 Export Reports</h3>
+                <p class="text-sm text-gray-300 mb-4">All data anonymized per ODPC Kenya compliance | Auto-sent to PROTECT Board Console & Partners (ANPPCAN, etc.)</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+                    <button onclick="generateReport('daily')" class="btn-primary"><i class="fas fa-file-pdf mr-2"></i>Daily Report</button>
+                    <button onclick="generateReport('weekly')" class="btn-primary"><i class="fas fa-file-csv mr-2"></i>Weekly Report</button>
+                    <button onclick="generateReport('monthly')" class="btn-primary"><i class="fas fa-chart-bar mr-2"></i>Monthly Report</button>
+                </div>
+                <p id="report-status" class="text-xs text-gray-400"></p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-lg mt-6">
+                <h3 class="font-bold mb-3"><i class="fas fa-send mr-2"></i>Board & Partners Notification</h3>
+                <div class="bg-slate-800 p-3 rounded text-sm text-gray-300 space-y-2">
+                    <p>📧 <strong>PROTECT Board Console</strong> - Receives anonymized daily reports</p>
+                    <p>🤝 <strong>ANPPCAN & Partners</strong> - Receive research-focused statistics</p>
+                    <p>🔐 All personally identifiable information removed | Only aggregated, anonymized data shared</p>
+                    <p id="last-board-sync" class="text-xs text-gray-400">Last report sent: Today at 18:30</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEGAL TAB -->
+        <div id="legal" class="tab-content">
+            <div class="space-y-4">
+                <div class="glass-panel p-6 rounded-lg">
+                    <h3 class="font-bold mb-3"><i class="fas fa-book mr-2"></i>Kenyan Legal Framework</h3>
+                    <div id="legal-framework" class="text-sm space-y-3 text-gray-300">
+                        <p><strong>Children Act 2022 (Kenya):</strong> Primary legislation protecting children's rights and welfare. All procedures must comply.</p>
+                        <p><strong>Data Protection Act 2019:</strong> ODPC compliance for handling personal information. Mandatory reporting without consent for child protection.</p>
+                        <p><strong>Computer Misuse and Cybercrimes Act 2018:</strong> Guidelines for digital evidence collection and privacy in digital investigations.</p>
+                        <p><strong>National Referral Pathway:</strong> Protocol for referrals across institutions and duty bearers.</p>
+                        <p><strong>Victim Support Act 2014:</strong> Protection and support services for victims, especially children.</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-lg">
+                    <h3 class="font-bold mb-3"><i class="fas fa-exclamation-triangle mr-2"></i>Mandatory Report Cases</h3>
+                    <div id="legal-mandatory" class="text-sm space-y-2 text-gray-300">
+                        <p>• Child abuse, neglect, or exploitation</p>
+                        <p>• Abandonment or destitution</p>
+                        <p>• Trafficking for any purpose</p>
+                        <p>• Sexual violence or exploitation</p>
+                        <p>• Harmful traditional practices (FGM, child marriage)</p>
+                        <p>• Child labor violations</p>
+                        <p>• Denial of education or health services</p>
+                        <p>⚠️ <strong>Failure to report these cases is a legal violation under Children Act 2022</strong></p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-lg">
+                    <h3 class="font-bold mb-3"><i class="fas fa-shield mr-2"></i>AI Legal Counsel & Procedure Guide</h3>
+                    <div id="legal-counsel" class="text-sm bg-slate-900 p-3 rounded max-h-48 overflow-y-auto text-gray-300 mb-3">
+                        <p class="italic">AI Legal Counsel ready to advise on:</p>
+                        <ul class="mt-2 space-y-1 text-xs">
+                            <li>✓ Case implications and legal requirements</li>
+                            <li>✓ Procedure compliance with Children's Act</li>
+                            <li>✓ Duty bearer roles and responsibilities</li>
+                            <li>✓ Evidence requirements for legal proceedings</li>
+                            <li>✓ Data protection and privacy obligations</li>
+                            <li>✓ Conflict resolution approaches</li>
+                        </ul>
+                    </div>
+                    <textarea id="legal-question" class="w-full bg-slate-800 text-white p-2 rounded border border-slate-700 text-sm mb-2" placeholder="Ask a legal question about a case, procedure, or officer's action..."></textarea>
+                    <button onclick="getLegalCounsel()" class="w-full btn-primary"><i class="fas fa-gavel mr-2"></i>Get Legal Counsel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="settings" class="tab-content">
+            <div class="space-y-4 max-w-2xl">
+                
+                <div class="glass-panel p-6 rounded-lg">
+                    <h3 class="font-bold mb-3"><i class="fas fa-user mr-2"></i>Officer Profile</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <label class="text-sm">Full Name</label>
+                            <input type="text" id="setting-name" class="w-full bg-slate-800 text-white px-3 py-2 rounded border border-slate-700 mt-1">
+                        </div>
+                        <div>
+                            <label class="text-sm">Email</label>
+                            <input type="email" id="setting-email" class="w-full bg-slate-800 text-white px-3 py-2 rounded border border-slate-700 mt-1">
+                        </div>
+                        <div>
+                            <label class="text-sm">WhatsApp/Phone</label>
+                            <input type="tel" id="setting-phone" class="w-full bg-slate-800 text-white px-3 py-2 rounded border border-slate-700 mt-1">
+                        </div>
+                        <button onclick="saveSettings()" class="btn-primary w-full mt-3"><i class="fas fa-save mr-2"></i>Save Profile</button>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-lg">
+                    <h3 class="font-bold mb-3"><i class="fas fa-lock mr-2"></i>Data & Privacy</h3>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-anonymize" checked>
+                            <span>Anonymize reports to Board & Partners</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-encrypt" checked>
+                            <span>Enable client-side encryption</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-gdpr" checked>
+                            <span>ODPC Kenya Compliance Enabled</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-audit" checked>
+                            <span>Automatic action logging & Board sync</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-lg">
+                    <h3 class="font-bold mb-3"><i class="fas fa-bell mr-2"></i>Notifications</h3>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-notify-urgent" checked>
+                            <span>Notify on urgent cases</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-notify-comments" checked>
+                            <span>Notify on new Facebook comments</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-notify-compliance" checked>
+                            <span>Notify on compliance issues</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="setting-notify-board" checked>
+                            <span>Notify when Board requests clarification</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-lg">
+                    <h3 class="font-bold mb-3"><i class="fas fa-link mr-2"></i>Board Console Integration</h3>
+                    <div class="space-y-2 text-sm text-gray-300">
+                        <p><strong>Status:</strong> <span id="board-connection-status" class="text-green-400">Connected</span></p>
+                        <p>Auto-sync audit logs: <span id="board-sync-enabled" class="text-green-400">Enabled</span></p>
+                        <p>Report sharing: <span id="board-reports-enabled" class="text-green-400">Enabled</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CASE DETAIL MODAL -->
+    <div id="caseModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold" id="modal-case-title">Case Details</h2>
+                <button onclick="closeModal()" class="text-2xl cursor-pointer">&times;</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 border-b border-slate-700 pb-4">
+                <div>
+                    <p class="text-xs text-gray-400 uppercase">Case ID</p>
+                    <p class="font-bold" id="modal-case-id"></p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 uppercase">Priority</p>
+                    <span id="modal-case-priority" class="badge"></span>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 uppercase">Procedure Status</p>
+                    <p class="font-bold text-sm" id="modal-case-procedure"></p>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="font-bold mb-2">Description</h3>
+                <p id="modal-case-description" class="text-sm text-gray-300 bg-slate-800 p-3 rounded"></p>
+            </div>
+
+            <!-- COMPREHENSIVE EVIDENCE SECTION -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-3">📎 Evidence & Documents (All Formats Supported)</h3>
+                <div id="modal-case-evidence" class="evidence-grid mb-3"></div>
+                <div class="mb-2">
+                    <input type="file" id="evidence-upload" multiple accept=".doc,.docx,.pdf,.jpg,.png,.mp4,.mp3,.wav,.odt,.xlsx,.txt,.zip" class="hidden">
+                    <button onclick="document.getElementById('evidence-upload').click()" class="btn-primary text-sm"><i class="fas fa-upload mr-2"></i>Add Evidence</button>
+                    <p class="text-xs text-gray-400 mt-1">Supported: PDF, Word, Excel, Images, Audio (MP3/WAV), Video (MP4), Text files, ZIP archives</p>
+                </div>
+            </div>
+
+            <!-- REFERRAL CHAIN -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-2">🔄 Referral Chain</h3>
+                <div id="modal-case-referrals" class="space-y-2 text-sm">
+                    <p class="text-gray-400">No referrals yet</p>
+                </div>
+                <div class="mt-3 flex gap-2">
+                    <select id="modal-referral-type" class="flex-1 bg-slate-800 text-white px-3 py-2 rounded border border-slate-700 text-sm">
+                        <option>Select referral type...</option>
+                        <option>Police</option>
+                        <option>Health</option>
+                        <option>Education</option>
+                        <option>Social Support</option>
+                        <option>Legal/Court</option>
+                        <option>Community</option>
+                    </select>
+                    <button onclick="addReferral()" class="btn-primary text-sm"><i class="fas fa-plus mr-2"></i>Add</button>
+                </div>
+            </div>
+
+            <!-- PROCEDURE TIMELINE -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-2">📋 Procedure Progress</h3>
+                <div id="modal-case-timeline" class="procedure-timeline text-sm"></div>
+            </div>
+
+            <!-- ENGAGEMENT HISTORY -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-2">💬 Engagement History</h3>
+                <div id="modal-case-messages" class="space-y-2 max-h-48 overflow-y-auto bg-slate-900 p-3 rounded"></div>
+            </div>
+
+            <!-- ASSIGN TO DUTY BEARER -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-2">👥 Assign to Duty Bearer</h3>
+                <div class="flex gap-2 flex-wrap">
+                    <select id="modal-duty-bearer" class="flex-1 bg-slate-800 text-white px-3 py-2 rounded border border-slate-700 text-sm">
+                        <option>Select duty bearer...</option>
+                        <option>Police Officer</option>
+                        <option>Health Worker</option>
+                        <option>Teacher</option>
+                        <option>Social Worker</option>
+                        <option>Community Leader</option>
+                        <option>Magistrate</option>
+                    </select>
+                    <button onclick="assignDutyBearer()" class="btn-primary text-sm"><i class="fas fa-paper-plane mr-2"></i>Assign</button>
+                </div>
+            </div>
+
+            <!-- LEGAL NOTES -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-2">⚖️ Legal Notes & Compliance Check</h3>
+                <textarea id="modal-legal-notes" class="w-full bg-slate-800 text-white p-2 rounded border border-slate-700 text-sm mb-2 h-20" placeholder="Add legal notes, procedure compliance checks..."></textarea>
+                <button onclick="updateLegalNotes()" class="btn-primary text-sm"><i class="fas fa-save mr-2"></i>Save Notes</button>
+            </div>
+
+            <div class="flex gap-2 flex-wrap">
+                <button onclick="closeModal()" class="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded text-sm">Close</button>
+                <button onclick="markResolved()" class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-sm"><i class="fas fa-check mr-2"></i>Mark Resolved</button>
+                <button onclick="flagForBoard()" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded text-sm"><i class="fas fa-flag mr-2"></i>Flag for Board</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="js/console4.js"></script>
+</body>
+</html>
