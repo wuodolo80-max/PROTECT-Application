@@ -16,6 +16,8 @@ This repository is configured to deploy automatically as a GitHub Pages live lan
 
 **Live URL:** `https://wuodolo80-max.github.io/PROTECT-Application/`
 
+**Production Deployment:** `https://protect-application.vercel.app`
+
 ## 📁 Repository Structure
 
 ```
@@ -24,6 +26,7 @@ PROTECT-Application/
 ├── js/
 │   └── main.js        # Interactive functionality and routing
 ├── README.md          # This file
+├── LICENSE            # Copyright and licensing information
 └── .github/
     └── workflows/
         └── deploy.yml # (Optional) GitHub Actions deployment
@@ -44,8 +47,10 @@ PROTECT-Application/
 - Book One Client-Side Diagnostic Metric Engine
 - Client-side data processing (zero backend exposure)
 
-### Console 4: Localized Node
-- Ndhiwa Sub-County emergency contacts
+### Console 4: Localized Node - Ndhiwa Sub-County Children's Office
+- **Direct Access Link:** [Ndhiwa Sub-County Console](https://protect-application.vercel.app/console4)
+- **Facebook Stakeholder Portal:** [Ndhiwa Children's Office Facebook](https://www.facebook.com/profile.php?id=61591632187238)
+- Emergency contacts and local office resources
 - National Child Helpline: **116**
 - Local office referrals and resources
 
@@ -66,9 +71,23 @@ PROTECT-Application/
 ## 🌍 Governance
 
 - **Architect & Design Framework:** Rev. Dr. Edward Odhiambo Nyamde
-- **Sponsoring Institutions:** Sifa Bible Institute & Grace Hour Enterprises
+- **Sponsoring Institution:** Sifa Bible Institute, a Division of Grace Hour Enterprises
 - **Sovereign Anchor Node:** Ndhiwa Sub-County Children's Office
 - **Legal Framework:** Children Act 2022 (Kenya)
+
+## 📞 Contact & Support
+
+**Sifa Bible Institute**
+- **WhatsApp:** +254731880272
+- **Role:** Contact and support for PROTECT Application
+- **Institution:** Division of Grace Hour Enterprises
+
+**Emergency Services:**
+- **National Child Helpline:** 116
+- **Local Office:** Ndhiwa Sub-County Children's Office
+
+**Stakeholder Communication:**
+- **Facebook Portal:** [Ndhiwa Children's Office](https://www.facebook.com/profile.php?id=61591632187238)
 
 ## 📝 How to Deploy
 
@@ -107,15 +126,14 @@ Tailwind custom colors are defined in `index.html`:
 ### Ads and Content
 Edit the `contextualAds` array in `js/main.js` to modify sponsor messages.
 
-## 📞 Contact & Support
-
-- **Emergency Helpline:** 116 (National Child Helpline)
-- **Local Office:** Ndhiwa Sub-County Children's Office
-
 ## 📄 License
 
-© 2026 PROTECT Global Enterprise. All rights reserved under sovereign legal structures.
+© 2026 Grace Hour Enterprises. All rights reserved.
+
+This application is developed under the sponsorship and governance of Sifa Bible Institute, a Division of Grace Hour Enterprises, in partnership with Ndhiwa Sub-County Children's Office for the protection and development of children in Kenya.
+
+See the [LICENSE](LICENSE) file for full terms.
 
 ---
 
-**Last Updated:** 2026-07-07 | **Version:** v3.0.0
+**Last Updated:** 2026-07-08 | **Version:** v3.1.0
