@@ -29,8 +29,6 @@
         .hidden-console { display: none !important; }
         html { scroll-behavior: smooth; }
         .console-btn.active { box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); transform: scale(1.05); }
-        .chat-container { max-height: 500px; overflow-y: auto; }
-        .chat-message { animation: slideIn 0.3s ease-in; }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -80,28 +78,35 @@
             <!-- PRIMARY SUB-TITLE ANCHOR DOCK - CONSOLE BUTTONS -->
             <nav class="bg-black/40 border border-slate-800 rounded-xl p-3 max-w-6xl mx-auto mb-8">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs font-bold uppercase tracking-wider">
-                    <button onclick="openConsole(event, 'child')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoRed text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105">
-                        <i class="fa-solid fa-child mr-1"></i> Child Console
+                    <a href="https://m.me/61591632187238" target="_blank" rel="noopener noreferrer" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoRed text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-child"></i> Child Console
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </a>
+                    <button onclick="comingSoon('household')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoBlue text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-home"></i> Household
+                        <span class="text-[8px] bg-blue-900/50 px-2 py-1 rounded">Coming Soon</span>
                     </button>
-                    <button onclick="openConsole(event, 'household')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoBlue text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105">
-                        <i class="fa-solid fa-home mr-1"></i> Household
+                    <button onclick="comingSoon('dutybearer')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoYellow text-slate-900 hover:text-white hover:bg-yellow-600 transition duration-200 border border-slate-800 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user-tie"></i> Duty Bearer
+                        <span class="text-[8px] bg-yellow-900/50 px-2 py-1 rounded">Coming Soon</span>
                     </button>
-                    <button onclick="openConsole(event, 'dutybearer')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoYellow text-slate-900 hover:text-white hover:bg-yellow-600 transition duration-200 border border-slate-800 transform hover:scale-105">
-                        <i class="fa-solid fa-user-tie mr-1"></i> Duty Bearer
-                    </button>
-                    <button onclick="openConsole(event, 'community')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoGreen text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105">
-                        <i class="fa-solid fa-people-group mr-1"></i> Community
+                    <button onclick="comingSoon('community')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-logoGreen text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-people-group"></i> Community
+                        <span class="text-[8px] bg-green-900/50 px-2 py-1 rounded">Coming Soon</span>
                     </button>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-bold uppercase tracking-wider mt-2">
-                    <button onclick="openConsole(event, 'practitioner')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-cyan-600 text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105">
-                        <i class="fa-solid fa-stethoscope mr-1"></i> Practitioner
+                    <button onclick="comingSoon('practitioner')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-cyan-600 text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-stethoscope"></i> Practitioner
+                        <span class="text-[8px] bg-cyan-900/50 px-2 py-1 rounded">Coming Soon</span>
                     </button>
-                    <button onclick="openConsole(event, 'government')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-purple-600 text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105">
-                        <i class="fa-solid fa-building mr-1"></i> Government
+                    <button onclick="comingSoon('government')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-purple-600 text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-building"></i> Government
+                        <span class="text-[8px] bg-purple-900/50 px-2 py-1 rounded">Coming Soon</span>
                     </button>
-                    <button onclick="openConsole(event, 'enterprise')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-orange-600 text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105">
-                        <i class="fa-solid fa-briefcase mr-1"></i> Enterprise
+                    <button onclick="comingSoon('enterprise')" class="console-btn p-3 rounded-lg bg-slate-900/60 hover:bg-orange-600 text-slate-200 hover:text-white transition duration-200 border border-slate-800 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-briefcase"></i> Enterprise
+                        <span class="text-[8px] bg-orange-900/50 px-2 py-1 rounded">Coming Soon</span>
                     </button>
                 </div>
             </nav>
@@ -121,212 +126,135 @@
 
         <!-- WELCOME PANEL -->
         <section id="console-welcome" class="bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-800 rounded-3xl p-8 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">Welcome to PROTECT Chat Stations</h2>
-            <p class="text-slate-300 mb-8 text-lg">Select a console above to start chatting with designated stakeholders</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left text-sm">
-                <div class="bg-slate-950 p-5 rounded-lg border border-red-800/30 hover:border-red-800/60 transition cursor-pointer">
-                    <div class="font-bold text-red-400 mb-2 text-lg"><i class="fa-solid fa-child mr-2"></i>Child</div>
-                    <p class="text-slate-400">Safe space for children to discuss concerns</p>
+            <h2 class="text-3xl font-bold text-white mb-2">Welcome to PROTECT Chat Stations</h2>
+            <p class="text-slate-400 mb-2 text-sm font-semibold">Ndhiwa Sub-County Children's Office Deployment</p>
+            <p class="text-slate-300 mb-8 text-lg">Select a console to connect via Facebook Messenger with PROTECT stakeholders</p>
+            
+            <!-- GROUP 1: NDHIWA DEPLOYMENT -->
+            <div class="mb-12">
+                <h3 class="text-xl font-bold text-logoRed mb-4 uppercase tracking-wider"><i class="fa-solid fa-rocket mr-2"></i>Group 1: Ndhiwa Sub-County Children's Office (LIVE)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left text-sm">
+                    <a href="https://m.me/61591632187238" target="_blank" rel="noopener noreferrer" class="bg-slate-950 p-5 rounded-lg border-2 border-red-800/60 hover:border-red-600/80 hover:bg-red-950/30 transition cursor-pointer group">
+                        <div class="font-bold text-red-400 mb-2 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-child"></i>
+                            <span>Child Console</span>
+                            <i class="fa-solid fa-external-link-alt text-xs ml-auto group-hover:translate-x-1 transition"></i>
+                        </div>
+                        <p class="text-slate-400 text-xs mb-3">Safe space for children to discuss concerns</p>
+                        <div class="text-[10px] bg-red-900/30 text-red-300 px-2 py-1 rounded inline-block">
+                            <i class="fa-solid fa-circle-check mr-1"></i>LIVE - Click to Chat
+                        </div>
+                    </a>
+                    <div class="bg-slate-950 p-5 rounded-lg border border-blue-800/30 opacity-50">
+                        <div class="font-bold text-blue-400 mb-2 text-lg"><i class="fa-solid fa-home mr-2"></i>Household</div>
+                        <p class="text-slate-400 text-xs mb-3">Family support and parenting guidance</p>
+                        <div class="text-[10px] bg-blue-900/30 text-blue-300 px-2 py-1 rounded inline-block">
+                            <i class="fa-solid fa-clock mr-1"></i>Coming Soon
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 p-5 rounded-lg border border-yellow-800/30 opacity-50">
+                        <div class="font-bold text-yellow-400 mb-2 text-lg"><i class="fa-solid fa-user-tie mr-2"></i>Duty Bearer</div>
+                        <p class="text-slate-400 text-xs mb-3">Support for teachers and leaders</p>
+                        <div class="text-[10px] bg-yellow-900/30 text-yellow-300 px-2 py-1 rounded inline-block">
+                            <i class="fa-solid fa-clock mr-1"></i>Coming Soon
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 p-5 rounded-lg border border-green-800/30 opacity-50">
+                        <div class="font-bold text-green-400 mb-2 text-lg"><i class="fa-solid fa-people-group mr-2"></i>Community</div>
+                        <p class="text-slate-400 text-xs mb-3">Community leaders and volunteers</p>
+                        <div class="text-[10px] bg-green-900/30 text-green-300 px-2 py-1 rounded inline-block">
+                            <i class="fa-solid fa-clock mr-1"></i>Coming Soon
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-slate-950 p-5 rounded-lg border border-blue-800/30 hover:border-blue-800/60 transition cursor-pointer">
-                    <div class="font-bold text-blue-400 mb-2 text-lg"><i class="fa-solid fa-home mr-2"></i>Household</div>
-                    <p class="text-slate-400">Family support and parenting guidance</p>
+            </div>
+
+            <!-- OTHER GROUPS - COMING SOON -->
+            <div class="mb-8 p-6 bg-slate-950 border border-slate-700 rounded-2xl">
+                <h3 class="text-lg font-bold text-slate-300 mb-4 uppercase tracking-wider">Additional Groups (Planned Rollout)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-left text-xs">
+                    <div class="p-4 bg-slate-900 rounded-lg border border-slate-700">
+                        <div class="font-bold text-slate-300 mb-2">Group 2: Household Support Network</div>
+                        <p class="text-slate-500">Family-focused intervention and support services</p>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-lg border border-slate-700">
+                        <div class="font-bold text-slate-300 mb-2">Group 3: Duty Bearer Platform</div>
+                        <p class="text-slate-500">Teachers, health workers, and community leaders</p>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-lg border border-slate-700">
+                        <div class="font-bold text-slate-300 mb-2">Group 4: Community Hub</div>
+                        <p class="text-slate-500">Grassroots mobilization and collective action</p>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-lg border border-slate-700">
+                        <div class="font-bold text-slate-300 mb-2">Group 5: Practitioners Network</div>
+                        <p class="text-slate-500">Professional social workers and specialists</p>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-lg border border-slate-700">
+                        <div class="font-bold text-slate-300 mb-2">Group 6: Government Liaison</div>
+                        <p class="text-slate-500">Institutional coordination and compliance</p>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-lg border border-slate-700">
+                        <div class="font-bold text-slate-300 mb-2">Group 7: Enterprise Partners</div>
+                        <p class="text-slate-500">Corporate engagement and sustainability</p>
+                    </div>
                 </div>
-                <div class="bg-slate-950 p-5 rounded-lg border border-yellow-800/30 hover:border-yellow-800/60 transition cursor-pointer">
-                    <div class="font-bold text-yellow-400 mb-2 text-lg"><i class="fa-solid fa-user-tie mr-2"></i>Duty Bearer</div>
-                    <p class="text-slate-400">Support for teachers and community leaders</p>
-                </div>
-                <div class="bg-slate-950 p-5 rounded-lg border border-green-800/30 hover:border-green-800/60 transition cursor-pointer">
-                    <div class="font-bold text-green-400 mb-2 text-lg"><i class="fa-solid fa-people-group mr-2"></i>Community</div>
-                    <p class="text-slate-400">Community leaders and volunteer network</p>
-                </div>
-                <div class="bg-slate-950 p-5 rounded-lg border border-cyan-800/30 hover:border-cyan-800/60 transition cursor-pointer">
-                    <div class="font-bold text-cyan-400 mb-2 text-lg"><i class="fa-solid fa-stethoscope mr-2"></i>Practitioner</div>
-                    <p class="text-slate-400">Professional consultation network</p>
-                </div>
-                <div class="bg-slate-950 p-5 rounded-lg border border-purple-800/30 hover:border-purple-800/60 transition cursor-pointer">
-                    <div class="font-bold text-purple-400 mb-2 text-lg"><i class="fa-solid fa-building mr-2"></i>Government</div>
-                    <p class="text-slate-400">Government coordination channel</p>
-                </div>
-                <div class="bg-slate-950 p-5 rounded-lg border border-orange-800/30 hover:border-orange-800/60 transition cursor-pointer">
-                    <div class="font-bold text-orange-400 mb-2 text-lg"><i class="fa-solid fa-briefcase mr-2"></i>Enterprise</div>
-                    <p class="text-slate-400">Corporate partnership channel</p>
-                </div>
+            </div>
+
+            <!-- QUICK START GUIDE -->
+            <div class="p-6 bg-gradient-to-r from-logoRed/10 to-logoBlue/10 border border-slate-700 rounded-2xl text-left">
+                <h4 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-book mr-2"></i>How to Use PROTECT Consoles</h4>
+                <ol class="space-y-3 text-sm text-slate-300">
+                    <li class="flex gap-3">
+                        <span class="bg-logoRed text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs font-bold">1</span>
+                        <span><strong>Click a Console Button</strong> - Each console connects to a dedicated Facebook Messenger channel</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="bg-logoBlue text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs font-bold">2</span>
+                        <span><strong>Use Your Facebook Account</strong> - Login with Facebook to start messaging (no new password needed)</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="bg-logoGreen text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs font-bold">3</span>
+                        <span><strong>Send Your Message</strong> - Type your concern, question, or update and send it</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="bg-logoYellow text-slate-900 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs font-bold">4</span>
+                        <span><strong>Get a Response</strong> - The PROTECT team responds through the same Messenger chat</span>
+                    </li>
+                </ol>
             </div>
         </section>
 
-        <!-- CONSOLE 1: CHILD CONSOLE -->
-        <section id="console-child" class="console-section hidden bg-slate-900 border-2 border-red-800/60 rounded-3xl p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-4 bg-red-950 text-red-400 rounded-2xl border border-red-800/50"><i class="fa-solid fa-child text-2xl"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-red-500 uppercase tracking-widest">Console 1</div>
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight">Child Chat Station</h2>
-                    </div>
-                </div>
-                <button onclick="closeConsole(event, 'child')" class="text-slate-400 hover:text-white text-xl transition"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6">
-                Safe, confidential space for children to discuss concerns and receive guidance from trained counselors.
+        <!-- INFO PANEL -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center">
+            <h3 class="text-lg font-bold text-white mb-3">Ndhiwa Sub-County Children's Office</h3>
+            <p class="text-slate-400 text-sm mb-4">
+                This PROTECT deployment serves as an input and output device to aid shared action that helps the office deliver on its mandate in Ndhiwa Sub-County, Kenya.
             </p>
-            <div class="chat-container bg-slate-950 border border-slate-800 rounded-xl p-4 mb-4 min-h-80">
-                <div id="chat-child" class="space-y-3"></div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="input-child" placeholder="Type your message..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-600">
-                <button onclick="sendMessage('child')" class="bg-logoRed hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send</button>
-            </div>
-        </section>
-
-        <!-- CONSOLE 2: HOUSEHOLD CONSOLE -->
-        <section id="console-household" class="console-section hidden bg-slate-900 border-2 border-blue-800/60 rounded-3xl p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-4 bg-blue-950 text-blue-400 rounded-2xl border border-blue-800/50"><i class="fa-solid fa-home text-2xl"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-blue-500 uppercase tracking-widest">Console 2</div>
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight">Household Chat Station</h2>
-                    </div>
+            <div class="flex flex-wrap gap-4 justify-center text-xs">
+                <div class="flex items-center gap-2 text-slate-300">
+                    <i class="fa-solid fa-location-dot text-logoRed"></i>
+                    <span>Ndhiwa Sub-County</span>
                 </div>
-                <button onclick="closeConsole(event, 'household')" class="text-slate-400 hover:text-white text-xl transition"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6">
-                Connect with family support specialists for parenting guidance, household safety, and family wellbeing.
-            </p>
-            <div class="chat-container bg-slate-950 border border-slate-800 rounded-xl p-4 mb-4 min-h-80">
-                <div id="chat-household" class="space-y-3"></div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="input-household" placeholder="Type your message..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-600">
-                <button onclick="sendMessage('household')" class="bg-logoBlue hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send</button>
-            </div>
-        </section>
-
-        <!-- CONSOLE 3: DUTY BEARER CONSOLE -->
-        <section id="console-dutybearer" class="console-section hidden bg-slate-900 border-2 border-yellow-800/60 rounded-3xl p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-4 bg-yellow-950 text-yellow-400 rounded-2xl border border-yellow-800/50"><i class="fa-solid fa-user-tie text-2xl"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-yellow-500 uppercase tracking-widest">Console 3</div>
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight">Duty Bearer Chat Station</h2>
-                    </div>
+                <div class="flex items-center gap-2 text-slate-300">
+                    <i class="fa-solid fa-shield text-logoGreen"></i>
+                    <span>Child Protection</span>
                 </div>
-                <button onclick="closeConsole(event, 'dutybearer')" class="text-slate-400 hover:text-white text-xl transition"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6">
-                Support for duty bearers including teachers, healthcare providers, and community leaders.
-            </p>
-            <div class="chat-container bg-slate-950 border border-slate-800 rounded-xl p-4 mb-4 min-h-80">
-                <div id="chat-dutybearer" class="space-y-3"></div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="input-dutybearer" placeholder="Type your message..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-yellow-600">
-                <button onclick="sendMessage('dutybearer')" class="bg-logoYellow hover:bg-yellow-600 text-slate-900 px-6 py-3 rounded-lg font-bold transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send</button>
-            </div>
-        </section>
-
-        <!-- CONSOLE 4: COMMUNITY CONSOLE -->
-        <section id="console-community" class="console-section hidden bg-slate-900 border-2 border-green-800/60 rounded-3xl p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-4 bg-green-950 text-green-400 rounded-2xl border border-green-800/50"><i class="fa-solid fa-people-group text-2xl"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-green-500 uppercase tracking-widest">Console 4</div>
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight">Community Chat Station</h2>
-                    </div>
+                <div class="flex items-center gap-2 text-slate-300">
+                    <i class="fa-solid fa-users text-logoBlue"></i>
+                    <span>Multi-Stakeholder</span>
                 </div>
-                <button onclick="closeConsole(event, 'community')" class="text-slate-400 hover:text-white text-xl transition"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6">
-                Engage with community leaders and volunteers for collective child protection initiatives.
-            </p>
-            <div class="chat-container bg-slate-950 border border-slate-800 rounded-xl p-4 mb-4 min-h-80">
-                <div id="chat-community" class="space-y-3"></div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="input-community" placeholder="Type your message..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-green-600">
-                <button onclick="sendMessage('community')" class="bg-logoGreen hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send</button>
-            </div>
-        </section>
-
-        <!-- CONSOLE 5: PRACTITIONER CONSOLE -->
-        <section id="console-practitioner" class="console-section hidden bg-slate-900 border-2 border-cyan-800/60 rounded-3xl p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-4 bg-cyan-950 text-cyan-400 rounded-2xl border border-cyan-800/50"><i class="fa-solid fa-stethoscope text-2xl"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-cyan-500 uppercase tracking-widest">Console 5</div>
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight">Practitioner Chat Station</h2>
-                    </div>
+                <div class="flex items-center gap-2 text-slate-300">
+                    <i class="fa-solid fa-mobile text-logoYellow"></i>
+                    <span>Facebook-Enabled</span>
                 </div>
-                <button onclick="closeConsole(event, 'practitioner')" class="text-slate-400 hover:text-white text-xl transition"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6">
-                Professional consultation network for social workers, psychologists, and child protection specialists.
-            </p>
-            <div class="chat-container bg-slate-950 border border-slate-800 rounded-xl p-4 mb-4 min-h-80">
-                <div id="chat-practitioner" class="space-y-3"></div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="input-practitioner" placeholder="Type your message..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-600">
-                <button onclick="sendMessage('practitioner')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-3 rounded-lg font-bold transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send</button>
-            </div>
-        </section>
-
-        <!-- CONSOLE 6: GOVERNMENT CONSOLE -->
-        <section id="console-government" class="console-section hidden bg-slate-900 border-2 border-purple-800/60 rounded-3xl p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-4 bg-purple-950 text-purple-400 rounded-2xl border border-purple-800/50"><i class="fa-solid fa-building text-2xl"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-purple-500 uppercase tracking-widest">Console 6</div>
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight">Government Chat Station</h2>
-                    </div>
-                </div>
-                <button onclick="closeConsole(event, 'government')" class="text-slate-400 hover:text-white text-xl transition"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6">
-                Coordination channel for government agencies and institutional stakeholders.
-            </p>
-            <div class="chat-container bg-slate-950 border border-slate-800 rounded-xl p-4 mb-4 min-h-80">
-                <div id="chat-government" class="space-y-3"></div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="input-government" placeholder="Type your message..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-600">
-                <button onclick="sendMessage('government')" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-bold transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send</button>
-            </div>
-        </section>
-
-        <!-- CONSOLE 7: ENTERPRISE CONSOLE -->
-        <section id="console-enterprise" class="console-section hidden bg-slate-900 border-2 border-orange-800/60 rounded-3xl p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-4 bg-orange-950 text-orange-400 rounded-2xl border border-orange-800/50"><i class="fa-solid fa-briefcase text-2xl"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-orange-500 uppercase tracking-widest">Console 7</div>
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight">Enterprise Chat Station</h2>
-                    </div>
-                </div>
-                <button onclick="closeConsole(event, 'enterprise')" class="text-slate-400 hover:text-white text-xl transition"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6">
-                Corporate partnership and business intelligence channel for enterprise stakeholders.
-            </p>
-            <div class="chat-container bg-slate-950 border border-slate-800 rounded-xl p-4 mb-4 min-h-80">
-                <div id="chat-enterprise" class="space-y-3"></div>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="input-enterprise" placeholder="Type your message..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-orange-600">
-                <button onclick="sendMessage('enterprise')" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-bold transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send</button>
             </div>
         </section>
 
     </main>
 
-    <footer class="text-center py-8 text-slate-400 text-xs">
-        © 2026 PROTECT Global Enterprise. All rights reserved.
+    <footer class="text-center py-8 text-slate-400 text-xs border-t border-slate-800 mt-12">
+        <p>© 2026 PROTECT Global Enterprise. All rights reserved.</p>
+        <p class="mt-2">Ndhiwa Sub-County Children's Office Deployment | ODPC Kenya Compliant</p>
     </footer>
 
     <!-- Main JS -->
